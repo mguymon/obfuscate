@@ -24,4 +24,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency(%q<rb-inotify>, ["~> 0.8.8"])
   s.add_development_dependency(%q<activerecord>, ["> 3.0.0"])
   s.add_development_dependency(%q<sqlite3>, ["~> 1.3.0"])
+  s.add_development_dependency(%q<yard>, ["~> 0.8.0"])
 end
