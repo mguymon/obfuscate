@@ -14,7 +14,7 @@ describe Obfuscate::Obfuscatable do
 
   it "should obfuscate text" do
     obfuscated = Message.obfuscate( "blah blah blah blah blah blah blah" )
-    obfuscated.clarify( obfuscate ).should eql "blah blah blah blah blah blah blah"
+    Message.clarify( obfuscated ).should eql "blah blah blah blah blah blah blah"
   end
 
   describe "instance" do
