@@ -3,6 +3,14 @@
 A simple way to obfuscate ids and text. Useful when you have to make ids visible
 to users. Integrates directly with Rails 3.
 
+The goal is to make simple obfuscated ids that are not huge. This is achieved by using
+Blowfish and encrypting a single block. This produces a nice id of 11 characters (11
+since the trailing = is removed by default), for example `3NINgAbOhPc`. The caveat is,
+the id must be with 99,999,999, e.g. a max length of 8.
+
+Text can be obfuscated using Blowfishes string encryption as well, but than it produces
+output that is larger than the elegant 11 character single block encryption.
+
 https://github.com/mguymon/obfuscate
 
 [RDoc](http://rubydoc.info/gems/obfuscate/frames)
@@ -13,6 +21,42 @@ https://github.com/mguymon/obfuscate
 
 ## Ruby Usage
 
+A simple example
+
+    Obfuscate.setup do |config|
+      config.salt = "A weak salt ..."
+      config.mode = :string # defaults to :string
+    end
+
+    obfuscated = Obfuscate.obfuscate( "test" )
+    clarified = Obfuscate.clarify( obfuscated )
+
+## Rails Integration
+
+Create an initializer in `config/initializers` with:
+
+    require 'obfuscate/obfuscatable'
+    Obfuscate.setup do |config|
+      config.salt = "A weak salt ..."
+    end
+
+Now add to models that you want to be Obfuscatable:
+
+    class Message < ActiveRecord::Base
+      obfuscatable # a hash of config overrides can be passed.
+    end
+
+To get the 11 character obfuscated id, which uses `mode :block` for the Blowfish single block encryption:
+
+    message = Message.find(1)
+    obfuscated = message.obfuscated_id
+    clarified = message.clarify_id( obfuscated )
+
+Or obfuscate a block of text, using Blowfish string encryption, allowing longer than 8 to be obfuscated,
+but generate larger obfuscated text:
+
+    obfuscated = message.obfuscate( "if you use your imagination, this is a long block of text" )
+    clarified = message.clarify( obfuscated )
 
 ## License
 
