@@ -6,7 +6,7 @@ to users. Integrates directly with Rails 3.
 The goal is to make simple obfuscated ids that are not huge. This is achieved by using
 Blowfish and encrypting a single block. This produces a nice id of 11 characters (11
 since the trailing _=_ is removed by default), for example `3NINgAbOhPc`. The caveat is,
-the id must be with _99,999,999_, e.g. a max length of _8_.
+the id must be within _99,999,999_, e.g. a max length of _8_.
 
 Text can be obfuscated using Blowfishes string encryption as well, but than it produces
 output that is larger than the elegant 11 character single block encryption.
