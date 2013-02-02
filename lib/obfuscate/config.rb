@@ -35,7 +35,7 @@ class Obfuscate::Config
   end
 
   # Creates a new instance of Config with applied changes
-
+  #
   # @param [Hash] options of configurations
   # @option options [Symbol] :salt A Model specific salt
   # @option options [Symbol] :encode Enable Base64 and URL encoding for this Model. Enabled by default.

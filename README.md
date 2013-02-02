@@ -51,12 +51,15 @@ To get the 11 character `obfuscated_id`, which uses `mode :block` for the Blowfi
     message = Message.find(1)
     obfuscated = message.obfuscated_id
     clarified = message.clarify_id( obfuscated )
+    
+    Message.find_by_obfuscated_id( obfuscated )
 
 Or `obfuscate` a block of text, defaults to mode :string which uses Blowfish string encryption, allowing longer
 blocks of text to be obfuscated.
 
     obfuscated = message.obfuscate( "if you use your imagination, this is a long block of text" )
     clarified = message.clarify( obfuscated )
+    
 
 ## Benchmarks
 
