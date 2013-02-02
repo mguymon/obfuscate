@@ -60,7 +60,7 @@ but generate larger obfuscated text:
 
 ## Benchmarks
 
-Some benchmarks from my dev machine, with cpus clocking in at 2.53ghz:
+Some benchmarks from my dev machine, with cpu clocking in at 2.53ghz:
 
     Obfuscate.setup :salt => 'a very weak salt indead.'
 
