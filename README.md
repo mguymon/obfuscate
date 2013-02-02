@@ -58,6 +58,28 @@ but generate larger obfuscated text:
     obfuscated = message.obfuscate( "if you use your imagination, this is a long block of text" )
     clarified = message.clarify( obfuscated )
 
+## Benchmarks
+
+Some benchmarks from my dev machine, with cpus clocking in at 2.53ghz:
+
+    Obfuscate.setup :salt => 'a very weak salt indead.'
+
+    puts Benchmark.bm { |bm|
+      ids = []
+      bm.report("obfuscate x1000:") { 
+        1000.times { ids << Obfuscate.obfuscate( rand(1...99999999), {:mode => :block} ) }
+      }
+    
+      bm.report("clarify x1000:") {
+        ids.each { |id| Obfuscate.clarify( id, {:mode => :block} ) } 
+      }
+    }
+    
+    user     system      total        real
+    obfuscate x1000: 27.110000   0.000000  27.110000 ( 27.145539)
+    clarify x1000: 27.270000   0.000000  27.270000 ( 27.304084)
+
+
 ## License
 
 Licensed to the Apache Software Foundation (ASF) under one or more
