@@ -19,39 +19,61 @@ module Obfuscate
   module Obfuscatable
     extend ActiveSupport::Concern
 
-    included do
-    end
-
     module ClassMethods
+
+      # Make this Model Obfuscatable. Adds method obfuscate_id which obfuscates the id to 11 characters.
+      # Cavaet: Only supports id lengths up to 8 (e.g. 99,999,999) due to use of Blowfish block encryption.
+      #
+      # @params [Hash] options to override the default config
+      # @option options [Symbol] :salt A Model specific salt
+      # @option options [Symbol] :encode Enable Base64 and URL encoding for this Model. Enabled by default.
+      # @option options [Symbol] :remove_trailing_equal When in :block mode, removes the trailing = from the
+      #                                                 obfuscated text.
       def obfuscatable(options = {})
-        opts = Obfuscate.options.merge(options)
+        config = Obfuscate.config.apply(options)
 
-        cattr_accessor :obfuscatable_salt
-        self.obfuscatable_salt = (opts.delete(:salt) || Obfuscate.salt ).to_s
+        cattr_accessor :obfuscatable_config
+        self.obfuscatable_config = config
 
-        cattr_accessor :obfuscator
-        self.obfuscator = Obfuscate::Crypt.new( self.obfuscatable_salt, opts )
+        cattr_accessor :obfuscatable_crypt
+        self.obfuscatable_crypt = Obfuscate::Crypt.new( config )
+
+        define_method :obfuscate_id do
+          self.obfuscatable_crypt.obfuscate( self.id, :block )
+        end
+
+        define_method :clarify_id do |text|
+          self.class.clarify_id( text )
+        end
       end
 
+      # Find by obfuscated_id
+      #
+      # @return [Object]
       def find_by_obfuscated_id( text )
          find_by_id( clarify_id( text ) )
       end
 
+      # Clarifies obfuscated Model id
+      # @return [String]
       def clarify_id( text )
-        self.obfuscator.clarify( text, :block )
+        self.obfuscatable_crypt.clarify( text, :block )
       end
 
+      # Clarify obfuscated text.
+      #
+      # @param [String] text to clarify
+      # @param [Symbol] mode to clarify, defaults to :string
       def clarify( text, mode = :string)
-        self.obfuscator.clarify(text, mode)
+        self.obfuscatable_crypt.clarify(text, mode)
       end
 
+      #
+      # @param [String] text to clarify
+      # @param [Symbol] mode to clarify, defaults to :string
       def obfuscate( text, mode = :string)
-        self.obfuscator.obfuscate(text, mode)
+        self.obfuscatable_crypt.obfuscate(text, mode)
       end
-    end
-
-    def obfuscate_id
-      self.obfuscator.obfuscate( self.id, :block )
     end
 
   end

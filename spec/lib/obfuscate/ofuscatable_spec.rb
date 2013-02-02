@@ -15,16 +15,15 @@
 
 require 'spec_helper'
 require 'obfuscate/obfuscatable'
-require 'message'
 
 describe Obfuscate::Obfuscatable do
 
-  it "should have salt" do
-    Message.obfuscatable_salt.should eql "default salt"
+  it "should have config" do
+    Message.obfuscatable_config.salt.should eql "message salt"
   end
 
   it "should have obfuscator" do
-    Message.obfuscator.should_not be_nil
+    Message.obfuscatable_crypt.is_a?( Obfuscate::Crypt ).should be_true
   end
 
   it "should obfuscate text" do
@@ -42,12 +41,20 @@ describe Obfuscate::Obfuscatable do
       model
     end
 
-    it "should obfuscate_id" do
+    it "should obfuscate id" do
       model.obfuscate_id.should_not be nil
+    end
+
+    it "should clarify id" do
+      model.clarify_id( model.obfuscate_id ).to_i.should eql model.id
     end
 
     it "should find_by_obfuscated_id" do
       Message.find_by_obfuscated_id( model.obfuscate_id ).should eql model
     end
   end
+end
+
+class Message < ActiveRecord::Base
+  obfuscatable :salt => 'message salt'
 end

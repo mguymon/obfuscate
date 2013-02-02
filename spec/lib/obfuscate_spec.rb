@@ -18,9 +18,44 @@ require 'obfuscate'
 
 describe Obfuscate do
 
-  it "should set salt" do
-    Obfuscate.salt = "test"
-    Obfuscate.salt.should eql "test"
+
+  it "should setup config by block" do
+    Obfuscate.setup do |config|
+      config.mode = :block
+      config.salt = "salty salt"
+    end
+
+    Obfuscate.config.mode.should eql :block
+    Obfuscate.config.salt.should eql "salty salt"
+  end
+
+  it "should setup config by hash" do
+    Obfuscate.setup :salt => 'less salt', :mode => :string
+
+    Obfuscate.config.mode.should eql :string
+    Obfuscate.config.salt.should eql "less salt"
+  end
+
+  it "should setup config by hash and overriding block" do
+    Obfuscate.setup :salt => 'less salt', :mode => :string do |config|
+      config.salt = "mega salt"
+      config.encode = false
+    end
+
+    Obfuscate.config.mode.should eql :string
+    Obfuscate.config.salt.should eql "mega salt"
+    Obfuscate.config.encode.should eql false
+  end
+
+  it "should create Crypt" do
+    Obfuscate.setup :salt => 'obfuscate-salt', :mode => :string
+    Obfuscate.cryptor.should_not be_nil
+  end
+
+  it "should obfuscate and clarify" do
+    Obfuscate.setup :salt => 'obfuscate-salt', :mode => :string
+    obfuscated = Obfuscate.obfuscate("test obfuscation")
+    Obfuscate.clarify(obfuscated).should eql "test obfuscation"
   end
 
 end

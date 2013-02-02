@@ -15,13 +15,53 @@
 
 
 require 'obfuscate/version'
+require 'obfuscate/crypt'
+require 'obfuscate/config'
 
 module Obfuscate
 
   class << self
-    attr_accessor :salt
-    attr_accessor :options
+    attr_accessor  :config
+
+    # Obfuscate text. Depends on Obfuscate.setup to be called first
+    #
+    # @param [String] text to be obfuscated
+    # @param [Hash] options overrides how obfuscation should be handled
+    # @return [String]
+    def obfuscate(text, options = {} )
+      cryptor( options ).obfuscate( text )
+    end
+
+    # Clarify obfuscated text. Depends on Obfuscate.setup to be called first
+    #
+    # @param [String] text to be clarified
+    # @param [Hash] options overrides how clarify should be handled
+    # @return [String]
+    def clarify(text, options = {} )
+      cryptor( options ).clarify( text )
+    end
+
+    # Create instance of Obfuscate::Crypt. Depends on Obfuscate.setup to be called first
+    #
+    # @param [Hash] overrides how instance should be created
+    # @return [Obfuscate::Crypt]
+    def cryptor(options = {} )
+      Obfuscate::Crypt.new( @config.apply( options ) )
+    end
+
+    # Setup Obfuscate passing in a hash and/or block
+    #
+    # @param [Hash] options of configurations
+    # @option options [Symbol] :salt A Model specific salt
+    # @option options [Symbol] :encode Enable Base64 and URL encoding for this Model. Enabled by default.
+    # @option options [Symbol] :remove_trailing_equal When in :block mode, removes the trailing = from the
+    #                                                 obfuscated text.
+    # @param [block] blk of configuration, has precedence over options Hash.
+    # @return [Obfuscate::Config]
+    def setup(options ={}, &blk)
+      @config = @config.apply(options, &blk)
+    end
   end
 
-  self.options = {}
+  self.config = Obfuscate::Config.new
 end

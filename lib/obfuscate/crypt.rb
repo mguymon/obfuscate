@@ -15,51 +15,64 @@
 
 require 'obfuscate'
 require 'crypt/blowfish'
-require "base64"
+require 'base64'
 
 class Obfuscate::Crypt
-  def initialize( salt, opts = {} )
-    @opts = { :remove_trailing_equal => true, :encode => true, :mode => :string }.merge( opts )
-    @crypt = Crypt::Blowfish.new( salt )
 
-    @mode =  @opts[:mode].to_sym
+  attr_reader :config
+  attr_reader  :exec_config
+
+  # New instance of Obfuscate::Crypt
+  #
+  # @param [Obfuscate::Config]
+  def initialize( config )
+    @crypt = Crypt::Blowfish.new( config.salt )
+    @config = config
   end
 
-  def obfuscate( text, mode = nil )
+  # Obfuscate text
+  #
+  # @param [Symbol] override_mode to explicit set obfuscate mode to :string or :block
+  # @return [String]
+  def obfuscate( text, override_mode = nil )
 
-    mode = mode || @mode
+    @exec_config = @config.apply( :mode => (override_mode || @config.mode) )
 
     obfuscated = nil
-    if mode == :string
+    if @exec_config.mode == :string
       obfuscated = @crypt.encrypt_string(text)
-    elsif mode == :block
+    elsif @exec_config.mode == :block
       obfuscated = @crypt.encrypt_block(text.to_s.ljust(8))
     else
       raise "Unsupport Mode"
     end
 
-    if @opts[:encode]
+    if @exec_config.encode
       obfuscated = URI.escape(Base64.strict_encode64(obfuscated).strip)
-      obfuscated = obfuscated.chomp("=") if mode == :block && @opts[:remove_trailing_equal]
+      obfuscated = obfuscated.chomp("=") if @exec_config.remove_trailing_equal?
     end
 
     obfuscated
   end
 
-  def clarify( text, mode = nil )
+  # Clarify text
+  #
+  # @param [Symbol] override_mode to explicit set clarify mode to :string or :block
+  # @return [String]
+  def clarify( text, override_mode = nil )
 
-    mode = mode || @mode
+    @exec_config = @config.apply( :mode => (override_mode || @config.mode) )
     obfuscated = text.to_s
 
 
-    if @opts[:encode]
-      obfuscated << "=" if mode == :block && @opts[:remove_trailing_equal]
+    if @exec_config.encode
+      obfuscated << "=" if @exec_config.remove_trailing_equal?
       obfuscated = Base64.strict_decode64( URI.unescape(obfuscated) )
     end
 
-    if mode == :string
+    if @exec_config.mode == :string
       @crypt.decrypt_string( obfuscated )
-    elsif mode == :block
+    elsif @exec_config.mode == :block
       @crypt.decrypt_block( obfuscated ).strip
     else
       raise "Unsupport Mode"
