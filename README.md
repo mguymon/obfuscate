@@ -40,20 +40,20 @@ Create an initializer in `config/initializers` with:
       config.salt = "A weak salt ..."
     end
 
-Now add to models that you want to be Obfuscatable:
+Now add to models that you want to be `Obfuscatable`:
 
     class Message < ActiveRecord::Base
       obfuscatable # a hash of config overrides can be passed.
     end
 
-To get the 11 character obfuscated id, which uses `mode :block` for the Blowfish single block encryption:
+To get the 11 character `obfuscated_id`, which uses `mode :block` for the Blowfish single block encryption:
 
     message = Message.find(1)
     obfuscated = message.obfuscated_id
     clarified = message.clarify_id( obfuscated )
 
-Or obfuscate a block of text, using Blowfish string encryption, allowing longer than 8 to be obfuscated,
-but generate larger obfuscated text:
+Or `obfuscate` a block of text, defaults to mode :string which uses Blowfish string encryption, allowing longer
+blocks of text to be obfuscated.
 
     obfuscated = message.obfuscate( "if you use your imagination, this is a long block of text" )
     clarified = message.clarify( obfuscated )
