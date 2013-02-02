@@ -18,6 +18,10 @@ require 'obfuscate/obfuscatable'
 
 describe Obfuscate::Obfuscatable do
 
+  it "should give a hoot and not pollute" do
+    ActiveRecord::Base.method_defined?( :find_by_obfuscated_id ).should be_false
+  end
+
   it "should have config" do
     Message.obfuscatable_config.salt.should eql "message salt"
   end

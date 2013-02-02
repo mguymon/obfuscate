@@ -45,34 +45,37 @@ module Obfuscate
         define_method :clarify_id do |text|
           self.class.clarify_id( text )
         end
-      end
 
-      # Find by obfuscated_id
-      #
-      # @return [Object]
-      def find_by_obfuscated_id( text )
-         find_by_id( clarify_id( text ) )
-      end
+        class << self
 
-      # Clarifies obfuscated Model id
-      # @return [String]
-      def clarify_id( text )
-        self.obfuscatable_crypt.clarify( text, :block )
-      end
+          # Find by obfuscated_id
+          #
+          # @return [Object]
+          def find_by_obfuscated_id( text )
+            find_by_id( clarify_id( text ) )
+          end
 
-      # Clarify obfuscated text.
-      #
-      # @param [String] text to clarify
-      # @param [Symbol] mode to clarify, defaults to :string
-      def clarify( text, mode = :string)
-        self.obfuscatable_crypt.clarify(text, mode)
-      end
+          # Clarifies obfuscated Model id
+          # @return [String]
+          def clarify_id( text )
+            self.obfuscatable_crypt.clarify( text, :block )
+          end
 
-      #
-      # @param [String] text to clarify
-      # @param [Symbol] mode to clarify, defaults to :string
-      def obfuscate( text, mode = :string)
-        self.obfuscatable_crypt.obfuscate(text, mode)
+          # Clarify obfuscated text.
+          #
+          # @param [String] text to clarify
+          # @param [Symbol] mode to clarify, defaults to :string
+          def clarify( text, mode = :string)
+            self.obfuscatable_crypt.clarify(text, mode)
+          end
+
+          #
+          # @param [String] text to clarify
+          # @param [Symbol] mode to clarify, defaults to :string
+          def obfuscate( text, mode = :string)
+            self.obfuscatable_crypt.obfuscate(text, mode)
+          end
+        end
       end
     end
 
