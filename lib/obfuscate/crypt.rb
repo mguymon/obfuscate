@@ -48,7 +48,7 @@ class Obfuscate::Crypt
     end
 
     if @exec_config.encode
-      obfuscated = URI.escape(Base64.strict_encode64(obfuscated).strip)
+      obfuscated = Base64.urlsafe_encode64(obfuscated).strip
       obfuscated = obfuscated.chomp("=") if @exec_config.remove_trailing_equal?
     end
 
@@ -67,7 +67,7 @@ class Obfuscate::Crypt
 
     if @exec_config.encode
       obfuscated << "=" if @exec_config.remove_trailing_equal?
-      obfuscated = Base64.strict_decode64( URI.unescape(obfuscated) )
+      obfuscated = Base64.urlsafe_decode64( obfuscated )
     end
 
     if @exec_config.mode == :string

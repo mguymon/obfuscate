@@ -22,7 +22,7 @@ describe Obfuscate::Crypt do
 
   describe "obfuscate block mode" do
     before(:each) do
-      @config = Obfuscate.setup do |config|
+      @config = Obfuscate::Config.new.tap do |config|
         config.salt = "salt-salt-salt"
         config.mode = :block
       end
@@ -39,7 +39,9 @@ describe Obfuscate::Crypt do
     end
 
     it "should obfuscate without encoding" do
+      @config.encode.should be_true
       crypt = Obfuscate::Crypt.new( @config.apply(:encode => false ) )
+      @config.encode.should be_true
       crypt.obfuscate("without encoding").should eql "\x8F\xC7\xE4\n,2\xA2\xA7"
     end
 
@@ -51,7 +53,7 @@ describe Obfuscate::Crypt do
 
   describe "obfuscate string mode" do
     before(:each) do
-      @config = Obfuscate.setup do |config|
+      @config = Obfuscate::Config.new.tap do |config|
         config.salt = "salt-salt-salt"
         config.mode = :string
       end
