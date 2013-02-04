@@ -28,8 +28,8 @@ A simple example
       config.mode = :string # defaults to :string
     end
 
-    obfuscated = Obfuscate.obfuscate( "test" )
-    clarified = Obfuscate.clarify( obfuscated )
+    obfuscated = Obfuscate.obfuscate( "test" )   # "HoDruKtafqyLxZxu9s-kYQ=="
+    clarified = Obfuscate.clarify( obfuscated )  # "test"
 
 ## Rails Integration
 
@@ -49,15 +49,15 @@ Now add to models that you want to be `Obfuscatable`:
 To get the 11 character `obfuscated_id`, which uses `mode :block` for the Blowfish single block encryption:
 
     message = Message.find(1)
-    obfuscated = message.obfuscated_id
-    clarified = message.clarify_id( obfuscated )
+    obfuscated = message.obfuscated_id           # "NuwhZTtHnko"
+    clarified = message.clarify_id( obfuscated ) # "1"
     
     Message.find_by_obfuscated_id( obfuscated )
 
 Or `obfuscate` a block of text, defaults to mode :string which uses Blowfish string encryption, allowing longer
 blocks of text to be obfuscated.
 
-    obfuscated = message.obfuscate( "if you use your imagination, this is a long block of text" )
+    obfuscated = message.obfuscate( "if you use your imagination, this is a long block of text" ) # "GoxjVCCuBQgaLvttm7mXNEN9U6A_xxBjM3CYWBrsWs640PVXmkuypo7S8rBHEv_z1jP3hhFqQzlI9L1s2DTQ6FYZwfop-xlA"
     clarified = message.clarify( obfuscated )
     
 
