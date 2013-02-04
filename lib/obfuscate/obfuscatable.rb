@@ -38,7 +38,7 @@ module Obfuscate
         cattr_accessor :obfuscatable_crypt
         self.obfuscatable_crypt = Obfuscate::Crypt.new( config )
 
-        define_method :obfuscate_id do
+        define_method :obfuscated_id do
           self.obfuscatable_crypt.obfuscate( self.id, :block )
         end
 

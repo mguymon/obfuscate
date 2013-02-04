@@ -45,16 +45,16 @@ describe Obfuscate::Obfuscatable do
       model
     end
 
-    it "should obfuscate id" do
-      model.obfuscate_id.should_not be nil
+    it "should obfuscated id" do
+      model.obfuscated_id.should_not be nil
     end
 
     it "should clarify id" do
-      model.clarify_id( model.obfuscate_id ).to_i.should eql model.id
+      model.clarify_id( model.obfuscated_id ).to_i.should eql model.id
     end
 
     it "should find_by_obfuscated_id" do
-      Message.find_by_obfuscated_id( model.obfuscate_id ).should eql model
+      Message.find_by_obfuscated_id( model.obfuscated_id ).should eql model
     end
   end
 end
