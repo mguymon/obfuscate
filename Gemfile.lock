@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    obfuscate (0.0.2)
+    obfuscate (0.0.4)
       crypt19 (~> 1.2.0)
 
 GEM

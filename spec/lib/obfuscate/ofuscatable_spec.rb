@@ -53,6 +53,11 @@ describe Obfuscate::Obfuscatable do
       model.clarify_id( model.obfuscated_id ).to_i.should eql model.id
     end
 
+    it "should ignore bad obfuscated id" do
+      model.clarify_id( 7 ).should be_nil
+      model.clarify_id( "!@#$@%@#%@^%" ).should be_nil
+    end
+
     it "should find_by_obfuscated_id" do
       Message.find_by_obfuscated_id( model.obfuscated_id ).should eql model
     end

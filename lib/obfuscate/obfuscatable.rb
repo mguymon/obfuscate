@@ -58,7 +58,11 @@ module Obfuscate
           # Clarifies obfuscated Model id
           # @return [String]
           def clarify_id( text )
-            self.obfuscatable_crypt.clarify( text, :block )
+            begin
+              self.obfuscatable_crypt.clarify( text, :block )
+            rescue ArgumentError
+              # invalid text passed in, causing a Base64 decode error, ignore.
+            end
           end
 
           # Clarify obfuscated text.
