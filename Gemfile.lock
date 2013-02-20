@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     obfuscate (0.0.4)
-      crypt19 (~> 1.2.0)
+      otherinbox-crypt19 (~> 1.2.1)
 
 GEM
   remote: http://rubygems.org/
@@ -21,7 +21,6 @@ GEM
     arel (3.0.2)
     builder (3.0.4)
     coderay (1.0.8)
-    crypt19 (1.2.1)
     diff-lcs (1.1.3)
     ffi (1.3.1)
     guard (1.6.2)
@@ -38,6 +37,7 @@ GEM
     lumberjack (1.0.2)
     method_source (0.8.1)
     multi_json (1.5.0)
+    otherinbox-crypt19 (1.2.1)
     pry (0.9.11.4)
       coderay (~> 1.0.5)
       method_source (~> 0.8)
