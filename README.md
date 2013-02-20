@@ -9,7 +9,7 @@ since the trailing _=_ is removed by default), for example `3NINgAbOhPc`. The ca
 the id must be within _99,999,999_, e.g. a max length of _8_.
 
 Text can be obfuscated using Blowfishes string encryption as well, but than it produces
-output that is larger than the elegant 11 character single block encryption.
+output that is larger than the elegant 11 character from single block encryption.
 
 https://github.com/mguymon/obfuscate
 
