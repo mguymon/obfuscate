@@ -12,9 +12,10 @@ test/tmp
 test/version_tmp
 tmp
 
-#idea files
+#ide
 *.iml
 .idea
+.redcar
 
 # YARD artifacts
 .yardoc
