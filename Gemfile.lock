@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    obfuscate (0.0.5)
+    obfuscate (0.0.6)
       otherinbox-crypt19 (~> 1.2.1)
 
 GEM
