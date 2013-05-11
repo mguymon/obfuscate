@@ -52,7 +52,8 @@ To get the 11 character `obfuscated_id`, which uses `mode :block` for the Blowfi
     obfuscated = message.obfuscated_id           # "NuwhZTtHnko"
     clarified = message.clarify_id( obfuscated ) # "1"
     
-    Message.find_by_obfuscated_id( obfuscated )
+    Message.find_by_obfuscated( obfuscated )     # raises an ActiveRecord::RecordNotFound if the found record does not exist
+    Message.find_by_obfuscated_id( obfuscated )  # returns nil if the found record does not exist
 
 Or `obfuscate` a block of text, defaults to mode :string which uses Blowfish string encryption, allowing longer
 blocks of text to be obfuscated.
