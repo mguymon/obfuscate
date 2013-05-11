@@ -22,6 +22,10 @@ describe Obfuscate::Obfuscatable do
     ActiveRecord::Base.method_defined?( :find_by_obfuscated_id ).should be_false
   end
 
+  it "should give a hoot and not pollute" do
+    ActiveRecord::Base.method_defined?( :find_obfuscated ).should be_false
+  end
+
   it "should have config" do
     Message.obfuscatable_config.salt.should eql "message salt"
   end
@@ -60,6 +64,14 @@ describe Obfuscate::Obfuscatable do
 
     it "should find_by_obfuscated_id" do
       Message.find_by_obfuscated_id( model.obfuscated_id ).should eql model
+    end
+
+    it "should find_obfuscated" do
+      Message.find_obfuscated(model.obfuscated_id).should eql model
+    end
+
+    it "raises ActiveRecord::RecordNotFound retreiving a not existing model" do
+      expect { Message.find_obfuscated('NOT_EXIST') }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end
