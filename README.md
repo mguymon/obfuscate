@@ -3,12 +3,13 @@
 A simple way to obfuscate ids and text. Useful when you have to make ids visible
 to users. Integrates directly with Rails 3.
 
-The goal is to make simple obfuscated ids that are not huge. This is achieved by using
-Blowfish and encrypting a single block. This produces a nice id of 11 characters (11
-since the trailing _=_ is removed by default), for example `3NINgAbOhPc`. The caveat is,
-the id must be within _99,999,999_, e.g. a max length of _8_.
+The goal is to make simple obfuscated ids that are not huge. This is achieved by using an
+<a href="https://github.com/otherinbox/crypt">implementation</a> of <a href="http://www.schneier.com/blowfish.html">Blowfish</a> 
+and encrypting a single block. This produces a nice id of 11 characters (11 since the 
+trailing _=_ is removed by default), for example `3NINgAbOhPc`. The caveat is, the id 
+must be within _99,999,999_, e.g. a max length of _8_.
 
-Text can be obfuscated using Blowfishes string encryption as well, but than it produces
+Text can be obfuscated using Blowfish's string encryption as well, but than it produces
 output that is larger than the elegant 11 character from single block encryption.
 
 https://github.com/mguymon/obfuscate
