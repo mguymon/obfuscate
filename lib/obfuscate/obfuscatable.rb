@@ -55,6 +55,13 @@ module Obfuscate
             find_by_id( clarify_id( text ) )
           end
 
+          # Find by obfuscated_id
+          # @raises ActiveRecord::RecordNotFound
+          # @return [Object]
+          def find_obfuscated( text )
+            find( clarify_id( text ) )
+          end
+
           # Clarifies obfuscated Model id
           # @return [String]
           def clarify_id( text )
