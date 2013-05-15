@@ -14,6 +14,7 @@
 # the License.
 
 require 'spec_helper'
+require 'obfuscate'
 require 'obfuscate/config'
 
 describe Obfuscate::Config do
