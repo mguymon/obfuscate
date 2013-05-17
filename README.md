@@ -44,7 +44,7 @@ Create an initializer in `config/initializers` with:
 Now add to models that you want to be `Obfuscatable`, with <a href="http://rubydoc.info/gems/obfuscate/Obfuscate/Obfuscatable/ClassMethods">possible config options</a>:
 
     class Message < ActiveRecord::Base
-      obfuscatable # a hash of config overrides can be passed.
+      obfuscatable # a hash of config options can be passed.
     end
 
 To get the 11 character `obfuscated_id`, which uses `mode :block` for the Blowfish single block encryption:
