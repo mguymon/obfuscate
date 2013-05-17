@@ -2,7 +2,7 @@
 
 ### 0.0.7 (May 16, 2013)
 
-* Add :append_salt option to obfuscateable
+* Add :append_salt option to obfuscatable
 
 ### 0.0.6 (May 11, 2013)
 
