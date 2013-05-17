@@ -25,11 +25,19 @@ module Obfuscate
       # Cavaet: Only supports id lengths up to 8 (e.g. 99,999,999) due to use of Blowfish block encryption.
       #
       # @params [Hash] options to override the default config
-      # @option options [Symbol] :salt A Model specific salt
+      # @option options [Symbol] :salt A Model specific salt, length must be between 1-56
+      # @option options [Symbol] :append_salt Append string to default salt and use for this Model. Overwrites the salt option.
       # @option options [Symbol] :encode Enable Base64 and URL encoding for this Model. Enabled by default.
       # @option options [Symbol] :remove_trailing_equal When in :block mode, removes the trailing = from the
       #                                                 obfuscated text.
       def obfuscatable(options = {})
+        # :append_salt will append the string to the default salt
+        append_salt = options.with_indifferent_access.delete(:append_salt)
+        if append_salt
+          options[:salt] = "#{Obfuscate.config.salt}#{append_salt}"
+        end
+        
+        
         config = Obfuscate.config.apply(options)
 
         cattr_accessor :obfuscatable_config

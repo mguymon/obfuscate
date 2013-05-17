@@ -19,6 +19,18 @@ require 'obfuscate/config'
 
 describe Obfuscate::Config do
 
+  it "should raise error if salt is to large" do
+    expect do 
+      Obfuscate::Config.new.salt = "a79094729c586621afe294eab90ce4c21749d54be80ef08425d372a281b8"
+    end.to raise_error(RuntimeError)
+  end
+  
+  it "should raise error if salt is empty" do
+    expect do 
+      Obfuscate::Config.new.salt = ""
+    end.to raise_error(RuntimeError)
+  end
+  
   it "should have default mode" do
     Obfuscate::Config.new.mode.should eql :string
   end

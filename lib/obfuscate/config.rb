@@ -27,6 +27,14 @@ class Obfuscate::Config
   def mode=(mode)
     @mode = mode.to_sym
   end
+  
+  def salt=(salt)
+    if salt.length == 0 || salt.length > 56
+      raise "Obfuscate salt length must be between 1-56"
+    else
+      @salt = salt
+    end
+  end
 
   # Check if mode is :block and remove_trailing_equal is true
   # @return [Boolean]
@@ -34,7 +42,8 @@ class Obfuscate::Config
     self.mode == :block && self.remove_trailing_equal == true
   end
 
-  # Creates a new instance of Config with applied changes
+  # Creates a new instance of Config with applied changes. Does not change
+  # the original Config.
   #
   # @param [Hash] options of configurations
   # @option options [Symbol] :salt A Model specific salt

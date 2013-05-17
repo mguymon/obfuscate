@@ -20,17 +20,14 @@ describe Obfuscate::Obfuscatable do
 
   it "should give a hoot and not pollute" do
     ActiveRecord::Base.method_defined?( :find_by_obfuscated_id ).should be_false
-  end
-
-  it "should give a hoot and not pollute" do
     ActiveRecord::Base.method_defined?( :find_obfuscated ).should be_false
   end
 
-  it "should have config" do
-    Message.obfuscatable_config.salt.should eql "message salt"
+  it "should have appended salt" do
+    Message.obfuscatable_config.salt.should eql "Test Salt--Message--"
   end
 
-  it "should have obfuscator" do
+  it "should have crypt" do
     Message.obfuscatable_crypt.is_a?( Obfuscate::Crypt ).should be_true
   end
 
@@ -76,6 +73,7 @@ describe Obfuscate::Obfuscatable do
   end
 end
 
+Obfuscate.config.salt = "Test Salt"
 class Message < ActiveRecord::Base
-  obfuscatable :salt => 'message salt'
+  obfuscatable :append_salt => "--Message--"
 end

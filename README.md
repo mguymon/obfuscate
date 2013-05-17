@@ -25,8 +25,8 @@ https://github.com/mguymon/obfuscate
 A simple example
 
     Obfuscate.setup do |config|
-      config.salt = "A weak salt ..."
-      config.mode = :string # defaults to :string
+      config.salt = "A weak salt ..." # Length must be between 1-56 
+      config.mode = :string           # defaults to :string
     end
 
     obfuscated = Obfuscate.obfuscate( "test" )   # "HoDruKtafqyLxZxu9s-kYQ=="
@@ -38,10 +38,10 @@ Create an initializer in `config/initializers` with:
 
     require 'obfuscate/obfuscatable'
     Obfuscate.setup do |config|
-      config.salt = "A weak salt ..."
+      config.salt = "A weak salt ..." # Length must be between 1-56 
     end
 
-Now add to models that you want to be `Obfuscatable`:
+Now add to models that you want to be `Obfuscatable`, with <a href="http://rubydoc.info/gems/obfuscate/Obfuscate/Obfuscatable/ClassMethods">possible config options</a>:
 
     class Message < ActiveRecord::Base
       obfuscatable # a hash of config overrides can be passed.
