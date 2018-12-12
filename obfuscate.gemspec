@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_runtime_dependency(%q<otherinbox-crypt19>, ["~> 1.2.1"])
+  s.add_dependency(%q<otherinbox-crypt19>, ["~> 1.2.1"])
   s.add_development_dependency(%q<rspec>, ["~> 2.12.0"])
   s.add_development_dependency(%q<guard-rspec>, ["~> 2.4.0"])
   s.add_development_dependency(%q<rb-inotify>, ["~> 0.8.8"])
