@@ -18,14 +18,13 @@ require 'crypt/blowfish'
 require 'base64'
 
 class Obfuscate::Crypt
-
   attr_reader :config
-  attr_reader  :exec_config
+  attr_reader :exec_config
 
   # New instance of Obfuscate::Crypt
   #
   # @param [Obfuscate::Config]
-  def initialize( config )
+  def initialize(config)
     @crypt = Crypt::Blowfish.new( config.salt )
     @config = config
   end
@@ -34,9 +33,9 @@ class Obfuscate::Crypt
   #
   # @param [Symbol] override_mode to explicit set obfuscate mode to :string or :block
   # @return [String]
-  def obfuscate( text, override_mode = nil )
+  def obfuscate(text, override_mode = nil)
 
-    @exec_config = @config.apply( :mode => (override_mode || @config.mode) )
+    @exec_config = @config.apply(:mode => (override_mode || @config.mode) )
 
     obfuscated = nil
     if @exec_config.mode == :string

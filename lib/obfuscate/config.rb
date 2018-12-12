@@ -27,7 +27,7 @@ class Obfuscate::Config
   def mode=(mode)
     @mode = mode.to_sym
   end
-  
+
   def salt=(salt)
     if salt.length == 0 || salt.length > 56
       raise "Obfuscate salt length must be between 1-56"
@@ -55,13 +55,11 @@ class Obfuscate::Config
   def apply(options = {}, &blk)
     config = self.class.new
 
-    changes = self.to_hash.merge( options )
-
+    changes = self.to_hash.merge(options)
     config.salt = changes[:salt] unless changes[:salt].nil?
     config.mode = changes[:mode] unless changes[:mode].nil?
     config.encode = changes[:encode] unless changes[:encode].nil?
     config.remove_trailing_equal = changes[:remove_trailing_equal] unless changes[:remove_trailing_equal].nil?
-
 
     yield(config) if blk
 
