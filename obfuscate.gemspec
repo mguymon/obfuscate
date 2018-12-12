@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency(%q<rspec>, ["~> 2.12.0"])
   s.add_development_dependency(%q<guard-rspec>, ["~> 2.4.0"])
   s.add_development_dependency(%q<rb-inotify>, ["~> 0.8.8"])
-  s.add_development_dependency(%q<activerecord>, ["> 3.0.0"])
-  s.add_development_dependency(%q<sqlite3>, ["~> 1.3.0"])
-  s.add_development_dependency(%q<yard>, ["~> 0.8.0"])
+  s.add_development_dependency(%q<activerecord>, [">= 3.2.22.1"])
+  s.add_development_dependency(%q<sqlite3>, ["~> 1.3.13"])
+  s.add_development_dependency(%q<yard>, [">= 0.9.11"])
 end
