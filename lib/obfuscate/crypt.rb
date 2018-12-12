@@ -18,6 +18,9 @@ require 'crypt/blowfish'
 require 'base64'
 
 class Obfuscate::Crypt
+  Base64Error = Class.new(StandardError)
+  UnsupportedModeError = Class.new(StandardError)
+
   attr_reader :config
   attr_reader :exec_config
 
@@ -58,23 +61,32 @@ class Obfuscate::Crypt
   #
   # @param [Symbol] override_mode to explicit set clarify mode to :string or :block
   # @return [String]
-  def clarify( text, override_mode = nil )
+  def clarify(text, override_mode = nil)
 
-    @exec_config = @config.apply( :mode => (override_mode || @config.mode) )
+    @exec_config = @config.apply(:mode => (override_mode || @config.mode))
     obfuscated = text.to_s
-
 
     if @exec_config.encode
       obfuscated << "=" if @exec_config.remove_trailing_equal?
-      obfuscated = Base64.urlsafe_decode64( obfuscated )
+      obfuscated = Base64.urlsafe_decode64(obfuscated)
     end
 
-    if @exec_config.mode == :string
-      @crypt.decrypt_string( obfuscated )
-    elsif @exec_config.mode == :block
-      @crypt.decrypt_block( obfuscated ).strip
-    else
-      raise "Unsupport Mode"
+    begin
+      if @exec_config.mode == :string
+        @crypt.decrypt_string(obfuscated)
+      elsif @exec_config.mode == :block
+        @crypt.decrypt_block(obfuscated).strip
+      else
+        raise UnsupportedModeError.new("Unknown mode: #{@exec_config.mode}")
+      end
+    rescue ArgumentError => ex
+      raise Base64Error.new("Cannot decode #{text}") if ex.message == 'invalid base64'
+
+      raise ex
+    rescue => ex
+      raise Base64Error.new("Cannot decode #{text}") if ex.message == "undefined method `%'"
+
+      raise ex
     end
   end
 end
