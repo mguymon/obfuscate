@@ -36,8 +36,7 @@ module Obfuscate
         if append_salt
           options[:salt] = "#{Obfuscate.config.salt}#{append_salt}"
         end
-        
-        
+
         config = Obfuscate.config.apply(options)
 
         cattr_accessor :obfuscatable_config
@@ -60,7 +59,10 @@ module Obfuscate
           #
           # @return [Object]
           def find_by_obfuscated_id( text )
-            find_by_id( clarify_id( text ) )
+            clarified_id = clarify_id( text )
+            return nil unless clarified_id.present?
+
+            find_by_id( clarified_id )
           end
 
           # Find by obfuscated_id
